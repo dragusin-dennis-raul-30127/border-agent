@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './cats/cats.module';
+import { UserModule } from './user/user.module';
+import { ControlModule } from './control/control.module';
+import { BorderModule } from './border/border.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { CatsModule } from './cats/cats.module';
       inject: [ConfigService],
     }),
     CatsModule,
+    UserModule,
+    ControlModule,
+    BorderModule,
   ],
 })
 export class AppModule {}
