@@ -5,19 +5,23 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop({ unique: true })
+  @Prop({
+    required: true,
+    unique: true,
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+  })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 
-  @Prop({ unique: true })
+  @Prop({ required: true, unique: true })
   badgeNumber: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'Border' })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Border' })
   borderId: Types.ObjectId;
 
   @Prop({ default: false })

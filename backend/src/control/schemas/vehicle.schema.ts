@@ -5,25 +5,25 @@ export type VehicleDocument = HydratedDocument<Vehicle>;
 
 @Schema({ _id: false })
 export class Vehicle {
-  @Prop({ type: String, enum: ['car', 'truck', 'motorcycle'] })
+  @Prop({ required: true, type: String, enum: ['car', 'truck', 'motorcycle'] })
   type: 'car' | 'truck' | 'motorcycle';
 
-  @Prop()
+  @Prop({ required: true })
   licensePlate: string;
 
-  @Prop()
+  @Prop({ required: true })
   vinNumber: string;
 
-  @Prop()
+  @Prop({ required: true })
   make: string;
 
-  @Prop()
+  @Prop({ required: true })
   model: string;
 
-  @Prop()
+  @Prop({ required: true })
   year: number;
 
-  @Prop()
+  @Prop({ required: true })
   weight: number;
 }
 

@@ -23,4 +23,17 @@ export class UserService {
       })
       .exec();
   }
+
+  async update(id: string, updateData: Partial<User>): Promise<User | null> {
+    return this.userModel
+      .findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+      })
+      .exec();
+  }
+
+  async delete(id: string): Promise<User | null> {
+    return this.userModel.findByIdAndDelete(id).exec();
+  }
 }

@@ -16,4 +16,24 @@ export class BorderService {
   async findAll(): Promise<Border[]> {
     return this.borderModel.find().exec();
   }
+
+  async findOne(id: string): Promise<Border | null> {
+    return this.borderModel.findById(id).exec();
+  }
+
+  async update(
+    id: string,
+    updateData: Partial<Border>,
+  ): Promise<Border | null> {
+    return this.borderModel
+      .findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+      })
+      .exec();
+  }
+
+  async delete(id: string): Promise<Border | null> {
+    return this.borderModel.findByIdAndDelete(id).exec();
+  }
 }

@@ -5,13 +5,13 @@ export type DriverDocument = HydratedDocument<Driver>;
 
 @Schema({ _id: false })
 export class Driver {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   documentNumber: string;
 
-  @Prop({ type: String, enum: ['ci', 'passport'] })
+  @Prop({ required: true, type: String, enum: ['ci', 'passport'] })
   documentType: 'ci' | 'passport';
 }
 

@@ -7,19 +7,19 @@ export type ControlDocument = HydratedDocument<Control>;
 
 @Schema()
 export class Control {
-  @Prop({ type: Driver })
+  @Prop({ required: true, type: Driver })
   driver: Driver;
 
-  @Prop({ type: Vehicle })
+  @Prop({ required: true, type: Vehicle })
   vehicle: Vehicle;
 
-  @Prop()
+  @Prop({ required: true })
   date: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'Border' })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Border' })
   borderId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
   @Prop({ default: false })

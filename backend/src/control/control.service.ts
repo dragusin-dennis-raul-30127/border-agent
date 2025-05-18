@@ -24,10 +24,28 @@ export class ControlService {
   }
 
   async findAllBy(filter: FindAllFilterType): Promise<Control[]> {
+    const query: any = {};
+
+    if (filter.borderId) {
+      query.borderId = filter.borderId;
+    }
+
+    return this.controlModel.find(query).exec();
+  }
+
+  async update(
+    id: string,
+    updateData: Partial<Control>,
+  ): Promise<Control | null> {
     return this.controlModel
-      .find({
-        borderId: filter.borderId,
+      .findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
       })
       .exec();
+  }
+
+  async delete(id: string): Promise<Control | null> {
+    return this.controlModel.findByIdAndDelete(id).exec();
   }
 }

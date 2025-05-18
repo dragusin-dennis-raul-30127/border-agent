@@ -5,16 +5,16 @@ export type BorderDocument = HydratedDocument<Border>;
 
 @Schema()
 export class Border {
-  @Prop()
+  @Prop({ required: true, unique: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   latitude: number;
 
-  @Prop()
+  @Prop({ required: true })
   longitude: number;
 
-  @Prop({ default: true })
+  @Prop({ required: true, default: true })
   areTrucksAllowed: boolean;
 }
 

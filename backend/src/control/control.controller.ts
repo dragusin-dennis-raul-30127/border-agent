@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { Control } from './schemas/control.schema';
 import { ControlService, FindAllFilterType } from './control.service';
 import { ControlStatistics } from './statistics.types';
@@ -17,16 +26,31 @@ export class ControlController {
     return this.controlService.findAll();
   }
 
+  @Patch('update/:controlId')
+  async updateControl(
+    @Param('controlId') controlId: string,
+    @Body() updateData: Partial<Control>,
+  ) {
+    return this.controlService.update(controlId, updateData);
+  }
+
+  @Delete('delete/:controlId')
+  async removeControl(@Param('controlId') controlId: string) {
+    return this.controlService.delete(controlId);
+  }
+
   @Get('statistics')
   async getStatistics(
     @Query('borderId') borderId?: string,
     @Query('period') period?: '1d' | '7d' | '30d' | '90d' | '365d',
   ): Promise<ControlStatistics> {
-    let filter: FindAllFilterType = {
-      borderId: borderId,
-    };
+    const filter: FindAllFilterType = {};
 
-    let controls: Control[] = await this.controlService.findAllBy(filter);
+    if (borderId) {
+      filter.borderId = borderId;
+    }
+
+    const controls: Control[] = await this.controlService.findAllBy(filter);
 
     let problematicPercent = 0;
     let numberOfTrucksPassed = 0;
