@@ -5,6 +5,7 @@ import { CatsModule } from './cats/cats.module';
 import { UserModule } from './user/user.module';
 import { ControlModule } from './control/control.module';
 import { BorderModule } from './border/border.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { BorderModule } from './border/border.module';
       inject: [ConfigService],
     }),
     CatsModule,
+    AuthModule,
     UserModule,
     ControlModule,
     BorderModule,
