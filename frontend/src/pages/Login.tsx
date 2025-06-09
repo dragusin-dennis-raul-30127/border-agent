@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
 
 export default function Login() {
   const form = useForm<LoginSchema>({
@@ -21,10 +23,11 @@ export default function Login() {
       password: "",
     },
   });
-
+  const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (values: LoginSchema) => {
+    setHasError(false);
     try {
       const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -33,17 +36,17 @@ export default function Login() {
       });
 
       if (!res.ok) {
-        alert("Login failed");
+        setHasError(true);
         console.error("Login failed with status:", res.status);
         return;
       }
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
-      alert("Login successful!");
+
       navigate("/control");
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login error");
+      setHasError(true);
     }
   };
 
@@ -84,7 +87,11 @@ export default function Login() {
               </FormItem>
             )}
           />
-
+          {hasError && (
+            <Alert variant="destructive">
+              <AlertDescription>Username or password invalid.</AlertDescription>
+            </Alert>
+          )}
           <Button type="submit" className="w-full">
             Login
           </Button>
