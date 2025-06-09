@@ -68,7 +68,7 @@ const Layout = (props: any) => {
       <SidebarProvider>
         <Sidebar>
           <SidebarHeader>
-            <h1>APlicatie</h1>
+            <h1 className="text-2xl font-bold mt-6">Border Agent</h1>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>

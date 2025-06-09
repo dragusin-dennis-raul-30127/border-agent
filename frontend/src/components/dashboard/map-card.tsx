@@ -12,13 +12,7 @@ import {
   Marker,
   useMarkerRef,
 } from "@vis.gl/react-google-maps";
-import { useEffect } from "react";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API;
 
 type Props = {
   borders: object[];
@@ -44,7 +38,7 @@ export default function MapCard(props: Props) {
         <CardDescription>Showing all borders</CardDescription>
       </CardHeader>
       <CardContent>
-        <APIProvider apiKey={"AIzaSyDgDk2ARmZ1S4NjVshZ1LlaFCniGJ5sqGo"}>
+        <APIProvider apiKey={mapsKey}>
           <Map
             style={{ width: "auto", height: "50vh" }}
             defaultCenter={{ lat: 45.9432, lng: 24.9668 }}
