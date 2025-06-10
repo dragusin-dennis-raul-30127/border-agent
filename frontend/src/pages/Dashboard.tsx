@@ -2,9 +2,10 @@ import Layout from "@/components/account-layout";
 import MapCard from "@/components/dashboard/map-card";
 import StatCard from "@/components/dashboard/stat-card";
 import { useEffect, useState } from "react";
+import type { ControlStatistics } from "../../../backend/src/control/statistics.types";
 
 export default function Dashboard() {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState<ControlStatistics>();
   const [borders, setBorders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -39,22 +40,22 @@ export default function Dashboard() {
   return (
     <Layout title="Dashboard">
       {!loading && stats && borders ? (
-        <div class="flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <div className="grid grid-cols-4 w-full gap-5">
             <StatCard
               title="Cars"
               desc="Number of cars passed"
-              value={stats.numberOfCarsPassed}
+              value={stats.numberOfCarsPassed.toString()}
             />
             <StatCard
               title="Trucks"
               desc="Number of trucks passed"
-              value={stats.numberOfTrucksPassed}
+              value={stats.numberOfTrucksPassed.toString()}
             />
             <StatCard
               title="Motorcycles"
               desc="Number of motorcycles passed"
-              value={stats.numberOfMotorcyclesPassed}
+              value={stats.numberOfMotorcyclesPassed.toString()}
             />
             <StatCard
               title="Problems"

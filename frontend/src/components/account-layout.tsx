@@ -11,9 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "./ui/sidebar";
-import { title } from "process";
 import { Button } from "./ui/button";
 import { clearUserSession, getUserDecodedToken } from "@/lib/user-token";
 import { useNavigate } from "react-router-dom";

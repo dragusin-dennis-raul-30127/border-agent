@@ -6,12 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  APIProvider,
-  Map,
-  Marker,
-  useMarkerRef,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API;
 
 type Props = {

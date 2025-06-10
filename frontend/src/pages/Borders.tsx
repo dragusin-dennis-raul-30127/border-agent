@@ -1,29 +1,45 @@
 import Layout from "@/components/account-layout";
+import { AlertDialogDemo } from "@/components/alert-dialog";
 import { Button } from "@/components/ui/button";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Pen, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { BorderDocument } from "../../../backend/src/border/border.schema";
 
 export default function Borders() {
-  const [borders, setBorders] = useState([]);
+  const [borders, setBorders] = useState<BorderDocument[]>([]);
 
-  useEffect(() => {
-    const loadData = async () => {
+  const loadData = async () => {
+    try {
       const resp = await fetch("http://localhost:3000/border");
       const json = await resp.json();
       setBorders(json);
-    };
+      console.log("border data:", json);
+    } catch (e) {
+      console.error("whoops", e);
+    }
+  };
 
+  async function deleteBorder(id: any) {
+    try {
+      await fetch(`http://localhost:3000/border/delete/${id}`, {
+        method: "DELETE",
+      });
+      loadData();
+    } catch (e) {
+      console.error("whoops", e);
+    }
+  }
+
+  useEffect(() => {
     loadData();
   }, []);
 
@@ -48,9 +64,14 @@ export default function Borders() {
                 <Button variant="outline">
                   <Pen />
                 </Button>
-                <Button variant="destructive">
-                  <Trash />
-                </Button>
+                <AlertDialogDemo
+                  button={
+                    <Button variant="destructive">
+                      <Trash />
+                    </Button>
+                  }
+                  onClick={() => deleteBorder(border._id)}
+                ></AlertDialogDemo>
               </TableCell>
             </TableRow>
           ))}
