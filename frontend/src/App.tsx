@@ -6,6 +6,7 @@ import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 import Dashboard from "./pages/Dashboard";
 import ControlList from "./pages/ControlList";
 import Borders from "./pages/Borders";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/control" element={<ControlList />}></Route>
         <Route path="/borders" element={<Borders />}></Route>
+        <Route path="/users" element={<Users />}></Route>
       </Routes>
     </>
   );

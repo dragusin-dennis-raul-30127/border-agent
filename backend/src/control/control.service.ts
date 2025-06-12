@@ -20,7 +20,11 @@ export class ControlService {
   }
 
   async findAll(): Promise<Control[]> {
-    return this.controlModel.find().exec();
+    return this.controlModel
+      .find()
+      .populate('userId', 'name')
+      .populate('borderId', 'name')
+      .exec();
   }
 
   async findAllBy(filter: FindAllFilterType): Promise<Control[]> {

@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function ControlList() {
   const [controls, setControls] = useState<ControlDocument[]>([]);
@@ -62,9 +63,12 @@ export default function ControlList() {
               </TableCell>
               <TableCell>{control.vehicle.licensePlate}</TableCell>
               <TableCell>{control.date}</TableCell>
-              <TableCell>{control.borderId.toString()}</TableCell>
+              <TableCell>{control.borderId?.name}</TableCell>
               <TableCell className="text-right">
-                <Modal title="Control Details" hasSaveButton={false}>
+                <Modal
+                  title="Control Details"
+                  trigger={<Button variant="outline">Details</Button>}
+                >
                   <div className="grid grid-cols-2 grid-rows-2 w-full gap-3">
                     <Card>
                       <CardHeader>
@@ -108,11 +112,11 @@ export default function ControlList() {
                       <CardHeader>
                         <CardTitle>Additional Info</CardTitle>
                         <CardDescription>
-                          Border: {control.borderId.toString()}
+                          Border: {control.borderId?.name}
                         </CardDescription>
                         <CardDescription>Date: {control.date}</CardDescription>
                         <CardDescription>
-                          Agent Name: {control.userId.toString()}
+                          Agent Name: {control.userId?.name}
                         </CardDescription>
                         {control.hasProblems ? (
                           <CardDescription>

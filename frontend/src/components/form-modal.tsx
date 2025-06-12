@@ -14,9 +14,10 @@ type Props = {
   title: string;
   children: ReactNode;
   trigger: ReactNode;
+  form: string;
 };
 
-export default function Modal(props: Props) {
+export default function FormModal(props: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
@@ -27,7 +28,12 @@ export default function Modal(props: Props) {
         {props.children}
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <div>
+              <Button variant="outline">Cancel</Button>
+              <Button type="submit" form={props.form}>
+                Save changes
+              </Button>
+            </div>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

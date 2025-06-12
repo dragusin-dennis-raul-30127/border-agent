@@ -43,7 +43,7 @@ export default function Login() {
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
 
-      navigate("/control");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       setHasError(true);
