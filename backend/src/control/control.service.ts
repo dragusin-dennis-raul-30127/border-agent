@@ -5,6 +5,7 @@ import { Control } from './schemas/control.schema';
 
 export type FindAllFilterType = {
   borderId?: string;
+  userId?: string;
   minDate?: string;
 };
 
@@ -30,8 +31,12 @@ export class ControlService {
   async findAllBy(filter: FindAllFilterType): Promise<Control[]> {
     const query: any = {};
 
-    if (filter.borderId) {
+    if (filter.borderId && filter.borderId !== '*') {
       query.borderId = filter.borderId;
+    }
+
+    if (filter.userId && filter.userId !== '*') {
+      query.userId = filter.userId;
     }
 
     return this.controlModel.find(query).exec();

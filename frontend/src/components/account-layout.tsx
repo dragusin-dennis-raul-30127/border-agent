@@ -1,4 +1,13 @@
-import { LayoutDashboardIcon } from "lucide-react";
+import {
+  ChartArea,
+  ClipboardList,
+  ClipboardPlus,
+  LayoutDashboardIcon,
+  LogOut,
+  MapPinPlus,
+  ShieldUser,
+  Users,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,6 +24,7 @@ import {
 import { Button } from "./ui/button";
 import { clearUserSession, getUserDecodedToken } from "@/lib/user-token";
 import { useNavigate } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
 
 const userItems = [
   {
@@ -25,17 +35,17 @@ const userItems = [
   {
     title: "Enter control",
     url: "/control/new",
-    icon: LayoutDashboardIcon,
+    icon: ClipboardPlus,
   },
   {
     title: "Control List",
     url: "/control",
-    icon: LayoutDashboardIcon,
+    icon: ClipboardList,
   },
   {
     title: "Statistics",
     url: "/stats",
-    icon: LayoutDashboardIcon,
+    icon: ChartArea,
   },
 ];
 
@@ -43,12 +53,12 @@ const adminItems = [
   {
     title: "Borders",
     url: "/borders",
-    icon: LayoutDashboardIcon,
+    icon: MapPinPlus,
   },
   {
     title: "Users",
     url: "/users",
-    icon: LayoutDashboardIcon,
+    icon: Users,
   },
 ];
 
@@ -68,10 +78,14 @@ const Layout = (props: any) => {
 
   return (
     <>
+      <Toaster />
       <SidebarProvider>
         <Sidebar>
-          <SidebarHeader>
-            <h1 className="text-2xl font-bold mt-6">Border Agent</h1>
+          <SidebarHeader className="">
+            <div className="inline-flex items-center gap-2 mt-6">
+              <ShieldUser />
+              <strong className="text-xl font-bold">Border Agent</strong>
+            </div>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -112,8 +126,8 @@ const Layout = (props: any) => {
             )}
 
             <SidebarGroup>
-              <Button variant="outline" onClick={logout}>
-                Logout
+              <Button variant="outline" className="flex gap-2" onClick={logout}>
+                <LogOut /> Logout
               </Button>
             </SidebarGroup>
           </SidebarContent>

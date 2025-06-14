@@ -1,7 +1,7 @@
 import Layout from "@/components/account-layout";
 import type { ControlDocument } from "../../../backend/src/control/schemas/control.schema";
 import { useEffect, useState } from "react";
-import StatsChart from "@/components/stats/stats-chart";
+
 import { BorderDocument } from "../../../backend/src/border/border.schema";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -11,14 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { StatsChart } from "@/components/stats/stats-chart";
 
-type DailyStat = {
+export type DailyStat = {
   count: number;
-  id: string;
+  _id: string;
   entries: ControlDocument[];
 };
 
-type DailyChartData = {
+export type DailyChartData = {
   id: string;
   total: number;
   problems: number;
@@ -56,13 +57,15 @@ export default function Stats() {
           `http://localhost:3000/control/statistics/daily?borderId=${borderId}&period=${period}`
         );
         const statsJson = (await statsResponse.json()) as DailyStat[];
-        setDailyStats(
-          statsJson.map((e) => ({
-            id: e.id,
-            total: e.count,
-            problems: e.entries.filter((x) => x.hasProblems).length,
-          }))
-        );
+        const t = statsJson.map((e) => ({
+          id: e._id,
+          total: e.count,
+          problems: e.entries.filter((x) => x.hasProblems).length,
+        }));
+
+        setDailyStats(t);
+
+        console.log(t);
       } catch (e: any) {
         setIsError(true);
       } finally {
@@ -75,7 +78,7 @@ export default function Stats() {
 
   return (
     <Layout title="Statistics">
-      <Card>
+      <Card className="mb-5">
         <CardContent className="flex gap-2">
           <Select value={borderId} onValueChange={setBorderId}>
             <SelectTrigger>
@@ -107,14 +110,16 @@ export default function Stats() {
           </Select>
         </CardContent>
       </Card>
+
       <StatsChart
-        title="My data"
+        title="Control versus issues"
+        description="Shows data per each day"
         label1="Controls"
         label2="Problems"
         data={dailyStats.map((s) => ({
           date: s.id,
-          data1: s.total,
-          data2: s.problems,
+          controls: s.total,
+          problems: s.problems,
         }))}
       />
     </Layout>

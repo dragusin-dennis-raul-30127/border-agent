@@ -16,6 +16,7 @@ import type { BorderDocument } from "../../../backend/src/border/border.schema";
 import BorderEditForm from "@/components/edit-border-form";
 import FormModal from "@/components/form-modal";
 import BorderAddForm from "@/components/add-border-form";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Borders() {
   const [borders, setBorders] = useState<BorderDocument[]>([]);
@@ -84,13 +85,13 @@ export default function Borders() {
 
   return (
     <Layout title="Borders">
-      <div className="flex justify-end items-center">
+      <div className="">
         <FormModal
           open={addModalOpen}
           onOpenChange={setAddModalOpen}
           trigger={
-            <Button variant="outline">
-              <Plus />
+            <Button variant="default" className="mb-5">
+              <Plus /> Create new
             </Button>
           }
           title={"Add Border"}
@@ -116,38 +117,47 @@ export default function Borders() {
         )}
       </FormModal>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[33%px]">Name</TableHead>
-            <TableHead className="w-[33%px]">Lat long</TableHead>
-            <TableHead className="w-[33%px] text-right">Management</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {borders.map((border) => (
-            <TableRow key={border._id.toString()}>
-              <TableCell className="font-medium">{border.name}</TableCell>
-              <TableCell>
-                {border.latitude} {border.longitude}
-              </TableCell>
-              <TableCell className="flex gap-1 justify-end">
-                <Button variant="outline" onClick={() => editBorder(border)}>
-                  <Pen />
-                </Button>
-                <AlertDialogDemo
-                  button={
-                    <Button variant="destructive">
-                      <Trash />
+      <Card>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[33%px]">Name</TableHead>
+                <TableHead className="w-[33%px]">Lat long</TableHead>
+                <TableHead className="w-[33%px] text-right">
+                  Management
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {borders.map((border) => (
+                <TableRow key={border._id.toString()}>
+                  <TableCell className="font-medium">{border.name}</TableCell>
+                  <TableCell>
+                    {border.latitude} {border.longitude}
+                  </TableCell>
+                  <TableCell className="flex gap-1 justify-end">
+                    <Button
+                      variant="outline"
+                      onClick={() => editBorder(border)}
+                    >
+                      <Pen />
                     </Button>
-                  }
-                  onClick={() => deleteBorder(border._id)}
-                ></AlertDialogDemo>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    <AlertDialogDemo
+                      button={
+                        <Button variant="destructive">
+                          <Trash />
+                        </Button>
+                      }
+                      onClick={() => deleteBorder(border._id)}
+                    ></AlertDialogDemo>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </Layout>
   );
 }

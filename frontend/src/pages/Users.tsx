@@ -17,6 +17,7 @@ import { AlertDialogDemo } from "@/components/alert-dialog";
 import UserEditForm from "@/components/update-user-form";
 import { UserUpdateFormValues } from "@/lib/schemas/user-update-schema";
 import UserAddForm from "@/components/add-user-form";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Users() {
   const [users, setUsers] = useState<UserDocument[]>([]);
@@ -80,15 +81,14 @@ export default function Users() {
 
   return (
     <Layout title="Users">
-      <pre>{editModalOpen}</pre>
-      <div className="flex justify-end mb-4">
+      <div>
         <FormModal
           title="Add User"
           open={addModalOpen}
           onOpenChange={setAddModalOpen}
           trigger={
-            <Button variant="outline">
-              <Plus />
+            <Button variant="default" className="mb-5">
+              <Plus /> Create new
             </Button>
           }
           form={"add-user-form"}
@@ -109,38 +109,42 @@ export default function Users() {
           />
         )}
       </FormModal>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Badge</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user._id.toString()}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.badgeNumber}</TableCell>
-              <TableCell className="flex gap-2 justify-end">
-                <Button variant="outline" onClick={() => editUser(user)}>
-                  <Pen />
-                </Button>
-                <AlertDialogDemo
-                  button={
-                    <Button variant="destructive">
-                      <Trash />
+      <Card>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Badge</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user._id.toString()}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.badgeNumber}</TableCell>
+                  <TableCell className="flex gap-2 justify-end">
+                    <Button variant="outline" onClick={() => editUser(user)}>
+                      <Pen />
                     </Button>
-                  }
-                  onClick={() => deleteUser(user._id)}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    <AlertDialogDemo
+                      button={
+                        <Button variant="destructive">
+                          <Trash />
+                        </Button>
+                      }
+                      onClick={() => deleteUser(user._id)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </Layout>
   );
 }

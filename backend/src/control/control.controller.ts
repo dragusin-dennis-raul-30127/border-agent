@@ -22,8 +22,14 @@ export class ControlController {
   }
 
   @Get()
-  async findAllControls(): Promise<Control[]> {
-    return this.controlService.findAll();
+  async findAllControls(
+    @Query('borderId') borderId?: string,
+    @Query('userId') userId?: string,
+  ): Promise<Control[]> {
+    return this.controlService.findAllBy({
+      borderId,
+      userId,
+    });
   }
 
   @Patch('update/:controlId')
