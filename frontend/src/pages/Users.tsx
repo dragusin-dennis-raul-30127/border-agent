@@ -20,6 +20,9 @@ import UserAddForm from "@/components/add-user-form";
 
 export default function Users() {
   const [users, setUsers] = useState<UserDocument[]>([]);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editModalUser, setEditModalUser] = useState<UserDocument>();
 
   const load = async () => {
     const resp = await fetch("http://localhost:3000/user");
@@ -32,11 +35,13 @@ export default function Users() {
 
   const addUser = async (data: UserFormValues) => {
     try {
+      console.log("aaaaa", data);
       await fetch("http://localhost:3000/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+      setAddModalOpen(false);
       load();
     } catch (e) {
       console.log("WHPPS", e);
@@ -44,26 +49,43 @@ export default function Users() {
   };
 
   const updateUser = async (id: any, data: UserUpdateFormValues) => {
-    await fetch(`http://localhost:3000/user/update/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    load();
+    try {
+      await fetch(`http://localhost:3000/user/update/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      load();
+      setEditModalOpen(false);
+    } catch (e) {
+      console.log("WHPPS", e);
+    }
   };
 
   const deleteUser = async (id: any) => {
-    await fetch(`http://localhost:3000/user/delete/${id}`, {
-      method: "DELETE",
-    });
-    load();
+    try {
+      await fetch(`http://localhost:3000/user/delete/${id}`, {
+        method: "DELETE",
+      });
+      load();
+    } catch (e) {
+      console.log("WHPPS", e);
+    }
+  };
+
+  const editUser = (user: UserDocument) => {
+    setEditModalUser(user);
+    setEditModalOpen(true);
   };
 
   return (
     <Layout title="Users">
+      <pre>{editModalOpen}</pre>
       <div className="flex justify-end mb-4">
         <FormModal
           title="Add User"
+          open={addModalOpen}
+          onOpenChange={setAddModalOpen}
           trigger={
             <Button variant="outline">
               <Plus />
@@ -71,10 +93,22 @@ export default function Users() {
           }
           form={"add-user-form"}
         >
-          <UserAddForm onSave={async (data) => await addUser(data)} />
+          <UserAddForm onSave={(data) => addUser(data)} />
         </FormModal>
       </div>
-
+      <FormModal
+        title="Edit User"
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        form={"update-user-form"}
+      >
+        {editModalUser && (
+          <UserEditForm
+            user={editModalUser}
+            onSave={(data) => updateUser(editModalUser?._id.toString(), data)}
+          />
+        )}
+      </FormModal>
       <Table>
         <TableHeader>
           <TableRow>
@@ -86,27 +120,14 @@ export default function Users() {
         </TableHeader>
         <TableBody>
           {users.map((user) => (
-            <TableRow key={user.id}>
+            <TableRow key={user._id.toString()}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.badgeNumber}</TableCell>
               <TableCell className="flex gap-2 justify-end">
-                <FormModal
-                  title="Edit User"
-                  trigger={
-                    <Button variant="outline">
-                      <Pen />
-                    </Button>
-                  }
-                  form={"edit-user-form"}
-                >
-                  <UserEditForm
-                    user={user}
-                    onSave={async (data: any) =>
-                      await updateUser(user._id, data)
-                    }
-                  />
-                </FormModal>
+                <Button variant="outline" onClick={() => editUser(user)}>
+                  <Pen />
+                </Button>
                 <AlertDialogDemo
                   button={
                     <Button variant="destructive">

@@ -43,16 +43,25 @@ export default function UserEditForm({ user, onSave }: UserEditFormProps) {
 
   const [borders, setBorders] = useState<BorderDocument[]>([]);
 
+  const getBorders = async () => {
+    try {
+      const resp = await fetch("http://localhost:3000/border");
+      const json = await resp.json();
+      setBorders(json);
+      console.log("border data:", json);
+    } catch (e) {
+      console.error("whoops", e);
+    }
+  };
+
   useEffect(() => {
-    fetch("http://localhost:3000/border")
-      .then((res) => res.json())
-      .then(setBorders);
+    getBorders();
   }, []);
 
   return (
     <Form {...form}>
       <form
-        id="edit-user-form"
+        id="update-user-form"
         onSubmit={form.handleSubmit(onSave)}
         className="grid gap-4 py-4"
       >

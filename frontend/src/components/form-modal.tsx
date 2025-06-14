@@ -13,13 +13,16 @@ import {
 type Props = {
   title: string;
   children: ReactNode;
-  trigger: ReactNode;
+  trigger?: ReactNode;
   form: string;
+  open: boolean;
+  onOpenChange: any;
+  entityId?: string;
 };
 
 export default function FormModal(props: Props) {
   return (
-    <Dialog>
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -30,11 +33,11 @@ export default function FormModal(props: Props) {
           <DialogClose asChild>
             <div>
               <Button variant="outline">Cancel</Button>
-              <Button type="submit" form={props.form}>
-                Save changes
-              </Button>
             </div>
           </DialogClose>
+          <Button type="submit" form={props.form}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

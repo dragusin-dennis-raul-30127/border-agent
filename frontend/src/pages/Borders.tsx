@@ -19,6 +19,9 @@ import BorderAddForm from "@/components/add-border-form";
 
 export default function Borders() {
   const [borders, setBorders] = useState<BorderDocument[]>([]);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editModalBorder, setEditModalBorder] = useState<BorderDocument>();
 
   const loadData = async () => {
     try {
@@ -50,6 +53,7 @@ export default function Borders() {
         body: JSON.stringify(data),
       });
       loadData();
+      setEditModalOpen(false);
     } catch (e) {
       console.error("whoops", e);
     }
@@ -63,10 +67,16 @@ export default function Borders() {
         body: JSON.stringify(data),
       });
       loadData();
+      setAddModalOpen(false);
     } catch (e) {
       console.error("whoops", e);
     }
   }
+
+  const editBorder = (border: BorderDocument) => {
+    setEditModalBorder(border);
+    setEditModalOpen(true);
+  };
 
   useEffect(() => {
     loadData();
@@ -76,6 +86,8 @@ export default function Borders() {
     <Layout title="Borders">
       <div className="flex justify-end items-center">
         <FormModal
+          open={addModalOpen}
+          onOpenChange={setAddModalOpen}
           trigger={
             <Button variant="outline">
               <Plus />
@@ -89,6 +101,23 @@ export default function Borders() {
           ></BorderAddForm>
         </FormModal>
       </div>
+
+      <FormModal
+        title={"EditBorder"}
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        form={"edit-border-form"}
+      >
+        {editModalBorder && (
+          <BorderEditForm
+            border={editModalBorder}
+            onSave={(data) =>
+              updateBorder(editModalBorder._id.toString(), data)
+            }
+          />
+        )}
+      </FormModal>
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -99,28 +128,15 @@ export default function Borders() {
         </TableHeader>
         <TableBody>
           {borders.map((border) => (
-            <TableRow key={border.id}>
+            <TableRow key={border._id.toString()}>
               <TableCell className="font-medium">{border.name}</TableCell>
               <TableCell>
                 {border.latitude} {border.longitude}
               </TableCell>
               <TableCell className="flex gap-1 justify-end">
-                <FormModal
-                  title={"EditBorder"}
-                  trigger={
-                    <Button variant={"outline"}>
-                      <Pen />
-                    </Button>
-                  }
-                  form={"edit-border-form"}
-                >
-                  <BorderEditForm
-                    border={border}
-                    onSave={async (data) =>
-                      await updateBorder(border._id, data)
-                    }
-                  />
-                </FormModal>
+                <Button variant="outline" onClick={() => editBorder(border)}>
+                  <Pen />
+                </Button>
                 <AlertDialogDemo
                   button={
                     <Button variant="destructive">

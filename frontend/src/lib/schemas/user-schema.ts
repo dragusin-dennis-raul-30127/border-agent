@@ -4,7 +4,7 @@ export const userSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  badgeNumber: z.number({
+  badgeNumber: z.coerce.number({
     required_error: "Badge number is required",
     invalid_type_error: "Badge number must be a number",
   }),
