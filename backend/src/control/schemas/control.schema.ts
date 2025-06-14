@@ -15,8 +15,8 @@ export class Control {
   @Prop({ required: true, type: Vehicle })
   vehicle: Vehicle;
 
-  @Prop({ required: true })
-  date: string;
+  @Prop({ required: true, type: Date })
+  date: Date;
 
   @Prop({ required: true, type: Types.ObjectId, ref: 'Border' })
   borderId: Types.ObjectId | Border;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { Control } from './schemas/control.schema';
 
 export type FindAllFilterType = {
@@ -35,6 +35,63 @@ export class ControlService {
     }
 
     return this.controlModel.find(query).exec();
+  }
+
+  async agg(filters: {
+    period: '1d' | '7d' | '30d' | '90d' | '365d';
+    borderId: string;
+  }): Promise<any> {
+    const day = 1000 * 60 * 60 * 24;
+    let daysago = 0;
+
+    switch (filters.period) {
+      case '1d':
+        daysago = day;
+        break;
+      case '7d':
+        daysago = day * 7;
+        break;
+      case '90d':
+        daysago = day * 90;
+        break;
+      case '365d':
+        daysago = day * 365;
+        break;
+      case '30d':
+      default:
+        daysago = day * 30;
+        break;
+    }
+
+    const filterQuery: FilterQuery<any> = {
+      date: {
+        $gte: new Date(Date.now() - daysago),
+      },
+    };
+
+    if (filters.borderId !== '*') {
+      filterQuery.borderId = {
+        $eq: filters.borderId,
+      };
+    }
+
+    return this.controlModel.aggregate([
+      {
+        $match: filterQuery,
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$date' },
+          },
+          entries: { $push: '$$ROOT' },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
   }
 
   async update(

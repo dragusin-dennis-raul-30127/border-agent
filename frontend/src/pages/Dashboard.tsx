@@ -17,7 +17,7 @@ export default function Dashboard() {
 
       try {
         const statsResponse = await fetch(
-          "http://localhost:3000/control/statistics"
+          "http://localhost:3000/control/statistics/summary"
         );
         const statsJson = await statsResponse.json();
         setStats(statsJson);
@@ -60,7 +60,7 @@ export default function Dashboard() {
             <StatCard
               title="Problems"
               desc="Percent of problems"
-              value={Number(stats.problematicPercent) * 100 + "%"}
+              value={Number(stats.problematicPercent * 100).toFixed(2) + "%"}
             />
           </div>
           <MapCard borders={borders} />

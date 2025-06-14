@@ -32,6 +32,11 @@ const userItems = [
     url: "/control",
     icon: LayoutDashboardIcon,
   },
+  {
+    title: "Statistics",
+    url: "/stats",
+    icon: LayoutDashboardIcon,
+  },
 ];
 
 const adminItems = [

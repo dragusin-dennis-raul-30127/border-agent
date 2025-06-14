@@ -39,7 +39,7 @@ export class ControlController {
     return this.controlService.delete(controlId);
   }
 
-  @Get('statistics')
+  @Get('statistics/summary')
   async getStatistics(
     @Query('borderId') borderId?: string,
     @Query('period') period?: '1d' | '7d' | '30d' | '90d' | '365d',
@@ -85,5 +85,22 @@ export class ControlController {
       numberOfCarsPassed: numberOfCarsPassed,
       numberOfMotorcyclesPassed: numberOfMotorcyclesPassed,
     };
+  }
+
+  @Get('statistics/daily')
+  async getDailyStats(
+    @Query('borderId') borderId: string,
+    @Query('period') period?: '1d' | '7d' | '30d' | '90d' | '365d',
+  ): Promise<any> {
+    const filters: any = {};
+
+    if (!period) {
+      period = '30d';
+    }
+
+    filters.borderId = borderId;
+    filters.period = period;
+
+    return await this.controlService.agg(filters);
   }
 }

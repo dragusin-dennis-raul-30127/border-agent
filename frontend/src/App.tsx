@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import ControlList from "./pages/ControlList";
 import Borders from "./pages/Borders";
 import Users from "./pages/Users";
+import Stats from "./pages/Stats";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/control" element={<ControlList />}></Route>
         <Route path="/borders" element={<Borders />}></Route>
         <Route path="/users" element={<Users />}></Route>
+        <Route path="/stats" element={<Stats />}></Route>
       </Routes>
     </>
   );

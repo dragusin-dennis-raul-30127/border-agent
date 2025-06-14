@@ -104,7 +104,7 @@ const ControlPage: React.FC = () => {
       ...data,
       userId,
       borderId,
-      date: new Date().toISOString(),
+      date: new Date(),
     };
 
     try {

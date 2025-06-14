@@ -1,7 +1,7 @@
 import Layout from "@/components/account-layout";
 import { AlertDialogDemo } from "@/components/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { borderSchema, BorderFormValues } from "@/lib/schemas/border-schema";
+import { BorderFormValues } from "@/lib/schemas/border-schema";
 import {
   Table,
   TableBody,
@@ -96,9 +96,7 @@ export default function Borders() {
           title={"Add Border"}
           form={"add-border-form"}
         >
-          <BorderAddForm
-            onSave={async (data) => await addBorder(data)}
-          ></BorderAddForm>
+          <BorderAddForm onSave={(data) => addBorder(data)} />
         </FormModal>
       </div>
 
