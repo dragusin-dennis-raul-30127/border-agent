@@ -3,7 +3,6 @@ import MapCard from "@/components/dashboard/map-card";
 import StatCard from "@/components/dashboard/stat-card";
 import { useEffect, useState } from "react";
 import type { ControlStatistics } from "../../../backend/src/control/statistics.types";
-import { TestChart } from "@/components/stats/test-chart";
 import { DailyChartData, DailyStat } from "./Stats";
 import { StatsChart } from "@/components/stats/stats-chart";
 
@@ -15,13 +14,21 @@ export default function Dashboard() {
   const [dailyStats, setDailyStats] = useState<DailyChartData[]>([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
     async function getStats() {
       setLoading(true);
       setIsError(false);
 
       try {
         const statsResponse = await fetch(
-          "http://localhost:3000/control/statistics/summary"
+          "http://localhost:3000/control/statistics/summary",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
         );
         const statsJson = await statsResponse.json();
         setStats(statsJson);
@@ -42,10 +49,19 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
     async function getStats() {
       try {
         const statsResponse = await fetch(
-          `http://localhost:3000/control/statistics/daily?borderId=*&period=30d`
+          `http://localhost:3000/control/statistics/daily?borderId=*&period=30d`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
         );
         const statsJson = (await statsResponse.json()) as DailyStat[];
         const t = statsJson.map((e) => ({

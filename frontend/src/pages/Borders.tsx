@@ -123,7 +123,8 @@ export default function Borders() {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[33%px]">Name</TableHead>
-                <TableHead className="w-[33%px]">Lat long</TableHead>
+                <TableHead className="w-[33%px]">Latitude</TableHead>
+                <TableHead className="w-[33%px]">Longitude</TableHead>
                 <TableHead className="w-[33%px] text-right">
                   Management
                 </TableHead>
@@ -133,9 +134,8 @@ export default function Borders() {
               {borders.map((border) => (
                 <TableRow key={border._id.toString()}>
                   <TableCell className="font-medium">{border.name}</TableCell>
-                  <TableCell>
-                    {border.latitude} {border.longitude}
-                  </TableCell>
+                  <TableCell>{border.latitude}</TableCell>
+                  <TableCell>{border.longitude}</TableCell>
                   <TableCell className="flex gap-1 justify-end">
                     <Button
                       variant="outline"

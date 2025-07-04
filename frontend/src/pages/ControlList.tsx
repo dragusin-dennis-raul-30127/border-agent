@@ -70,11 +70,11 @@ export default function ControlList() {
           `http://localhost:3000/control?userId=${userId}&borderId=${borderId}`
         );
         setControls(await data.json());
+        console.log("border name:", data);
       } catch (e) {
         console.error("whoops", e);
       }
     }
-
     getControls();
   }, [userId, borderId]);
 

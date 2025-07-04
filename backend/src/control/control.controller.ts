@@ -7,12 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { Control } from './schemas/control.schema';
 import { ControlService, FindAllFilterType } from './control.service';
 import { ControlStatistics } from './statistics.types';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('control')
+@UseGuards(JwtAuthGuard)
 export class ControlController {
   constructor(private readonly controlService: ControlService) {}
 

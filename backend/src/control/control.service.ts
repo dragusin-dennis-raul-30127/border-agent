@@ -39,7 +39,11 @@ export class ControlService {
       query.userId = filter.userId;
     }
 
-    return this.controlModel.find(query).exec();
+    return this.controlModel
+      .find(query)
+      .populate('userId', 'name')
+      .populate('borderId', 'name')
+      .exec();
   }
 
   async agg(filters: {
