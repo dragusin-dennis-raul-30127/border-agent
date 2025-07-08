@@ -36,23 +36,29 @@ export default function ControlList() {
   const [userId, setUserId] = useState("*");
 
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
     const getBorders = async () => {
       try {
-        const resp = await fetch("http://localhost:3000/border");
+        const resp = await fetch("http://localhost:3000/border", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
         const json = await resp.json();
         setBorders(json);
       } catch (e) {
         console.error("whoops", e);
       }
     };
-
-    getBorders();
-  }, []);
-
-  useEffect(() => {
     const getUsers = async () => {
       try {
-        const resp = await fetch("http://localhost:3000/user");
+        const resp = await fetch("http://localhost:3000/user", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
         const json = await resp.json();
         setUsers(json);
       } catch (e) {
@@ -60,14 +66,16 @@ export default function ControlList() {
       }
     };
 
-    getUsers();
-  }, []);
-
-  useEffect(() => {
     async function getControls() {
       try {
         const data = await fetch(
-          `http://localhost:3000/control?userId=${userId}&borderId=${borderId}`
+          `http://localhost:3000/control?userId=${userId}&borderId=${borderId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
         );
         setControls(await data.json());
         console.log("border name:", data);
@@ -76,6 +84,10 @@ export default function ControlList() {
       }
     }
     getControls();
+
+    getUsers();
+
+    getBorders();
   }, [userId, borderId]);
 
   return (

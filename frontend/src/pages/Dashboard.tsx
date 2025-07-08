@@ -33,7 +33,12 @@ export default function Dashboard() {
         const statsJson = await statsResponse.json();
         setStats(statsJson);
 
-        const bordersResponse = await fetch("http://localhost:3000/border");
+        const bordersResponse = await fetch("http://localhost:3000/border", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
         const bordersJson = await bordersResponse.json();
         setBorders(bordersJson);
 

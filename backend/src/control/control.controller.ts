@@ -74,7 +74,7 @@ export class ControlController {
       }
 
       if (control.vehicle.type === 'truck') {
-        numberOfCarsPassed += 1;
+        numberOfTrucksPassed += 1;
       }
 
       if (control.vehicle.type === 'car') {

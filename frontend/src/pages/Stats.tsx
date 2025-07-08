@@ -33,10 +33,17 @@ export default function Stats() {
   const [borderId, setBorderId] = useState("*");
   const [period, setPeriod] = useState("30d");
 
+  const token = localStorage.getItem("access_token");
+
   useEffect(() => {
     const getBorders = async () => {
       try {
-        const resp = await fetch("http://localhost:3000/border");
+        const resp = await fetch("http://localhost:3000/border", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
         const json = await resp.json();
         setBorders(json);
       } catch (e) {
@@ -54,7 +61,13 @@ export default function Stats() {
 
       try {
         const statsResponse = await fetch(
-          `http://localhost:3000/control/statistics/daily?borderId=${borderId}&period=${period}`
+          `http://localhost:3000/control/statistics/daily?borderId=${borderId}&period=${period}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
         );
         const statsJson = (await statsResponse.json()) as DailyStat[];
         const t = statsJson.map((e) => ({

@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Border } from './border.schema';
 import { BorderService } from './border.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('border')
+@UseGuards(JwtAuthGuard)
 export class BorderController {
   constructor(private readonly borderService: BorderService) {}
 

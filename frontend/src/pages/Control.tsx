@@ -101,7 +101,7 @@ const ControlPage: React.FC = () => {
   }, []);
 
   const onSubmit = async (data: ControlFormValues) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     setSubmitError(false);
 
     const payload = {

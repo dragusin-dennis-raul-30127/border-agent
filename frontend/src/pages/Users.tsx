@@ -25,8 +25,15 @@ export default function Users() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editModalUser, setEditModalUser] = useState<UserDocument>();
 
+  const token = localStorage.getItem("access_token");
+
   const load = async () => {
-    const resp = await fetch("http://localhost:3000/user");
+    const resp = await fetch("http://localhost:3000/user", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
     setUsers(await resp.json());
   };
 
@@ -39,7 +46,10 @@ export default function Users() {
       console.log("aaaaa", data);
       await fetch("http://localhost:3000/user", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
         body: JSON.stringify(data),
       });
       setAddModalOpen(false);
@@ -53,7 +63,10 @@ export default function Users() {
     try {
       await fetch(`http://localhost:3000/user/update/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
         body: JSON.stringify(data),
       });
       load();
@@ -67,6 +80,10 @@ export default function Users() {
     try {
       await fetch(`http://localhost:3000/user/delete/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       });
       load();
     } catch (e) {

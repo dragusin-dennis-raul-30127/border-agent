@@ -24,9 +24,16 @@ export default function Borders() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editModalBorder, setEditModalBorder] = useState<BorderDocument>();
 
+  const token = localStorage.getItem("access_token");
+
   const loadData = async () => {
     try {
-      const resp = await fetch("http://localhost:3000/border");
+      const resp = await fetch("http://localhost:3000/border", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
       const json = await resp.json();
       setBorders(json);
       console.log("border data:", json);
@@ -39,6 +46,10 @@ export default function Borders() {
     try {
       await fetch(`http://localhost:3000/border/delete/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       });
       loadData();
     } catch (e) {
@@ -50,7 +61,10 @@ export default function Borders() {
     try {
       await fetch(`http://localhost:3000/border/update/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
         body: JSON.stringify(data),
       });
       loadData();
@@ -64,7 +78,10 @@ export default function Borders() {
     try {
       await fetch(`http://localhost:3000/border`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
         body: JSON.stringify(data),
       });
       loadData();

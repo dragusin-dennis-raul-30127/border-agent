@@ -43,9 +43,16 @@ export default function UserEditForm({ user, onSave }: UserEditFormProps) {
 
   const [borders, setBorders] = useState<BorderDocument[]>([]);
 
+  const token = localStorage.getItem("access_token");
+
   const getBorders = async () => {
     try {
-      const resp = await fetch("http://localhost:3000/border");
+      const resp = await fetch("http://localhost:3000/border", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
       const json = await resp.json();
       setBorders(json);
       console.log("border data:", json);
